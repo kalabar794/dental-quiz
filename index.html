@@ -3,533 +3,395 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Find Your Dental Service | WEO Marketly</title>
+  <title>Dental Service Quiz | Willamette Family Dental</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --blue-deep: #1e5799;
-      --blue-warm: #3a7bd5;
-      --blue-light: #7db9e8;
-      --blue-pale: #e8f4fc;
-      --white: #ffffff;
-      --text-dark: #2c3e50;
-      --text-light: #6b7c93;
-      --success: #27ae60;
-      --shadow: 0 4px 20px rgba(30, 87, 153, 0.15);
+      --bg: #fdfaf5;
+      --card: #ffffff;
+      --accent: #6b8e7f;
+      --accent-dark: #4f6f62;
+      --text: #2f3b36;
+      --muted: #63726b;
+      --line: #d8e2dc;
+      --shadow: 0 8px 24px rgba(47, 59, 54, 0.08);
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-      background: linear-gradient(135deg, var(--blue-pale) 0%, var(--white) 100%);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
       min-height: 100vh;
-      color: var(--text-dark);
-      line-height: 1.6;
     }
 
     .container {
-      max-width: 480px;
+      max-width: 560px;
       margin: 0 auto;
       padding: 20px;
       min-height: 100vh;
     }
 
-    header {
-      text-align: center;
-      padding: 30px 0 20px;
-    }
+    header { text-align: center; padding: 20px 0 18px; }
 
-    .logo {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--blue-warm);
-      letter-spacing: 2px;
-      text-transform: uppercase;
+    .greeting {
+      font-family: "Caveat", cursive;
+      font-weight: 400;
+      font-size: 30px;
+      color: var(--accent-dark);
       margin-bottom: 10px;
     }
 
     h1 {
       font-size: 28px;
-      font-weight: 700;
-      color: var(--blue-deep);
+      line-height: 1.2;
       margin-bottom: 8px;
+      color: var(--accent-dark);
     }
 
     .subtitle {
+      color: var(--muted);
       font-size: 15px;
-      color: var(--text-light);
+      margin-bottom: 6px;
     }
 
-    .progress-bar {
+    .identity {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .progress {
       display: flex;
       justify-content: space-between;
-      padding: 25px 10px;
+      align-items: center;
+      margin: 18px 2px 20px;
       position: relative;
+      padding: 0 10px;
     }
 
-    .progress-bar::before {
-      content: '';
+    .progress::before {
+      content: "";
       position: absolute;
-      top: 50%;
-      left: 10%;
-      right: 10%;
+      left: 10px;
+      right: 10px;
       height: 3px;
-      background: #ddd;
+      background: #e7ece8;
+      top: 50%;
       transform: translateY(-50%);
       z-index: 0;
     }
 
     .progress-fill {
       position: absolute;
-      top: 50%;
-      left: 10%;
+      left: 10px;
+      width: 0;
       height: 3px;
-      background: var(--blue-warm);
+      background: var(--accent);
+      top: 50%;
       transform: translateY(-50%);
-      transition: width 0.3s ease;
+      transition: width 0.25s ease;
       z-index: 1;
     }
 
-    .step-dot {
+    .dot {
       width: 14px;
       height: 14px;
       border-radius: 50%;
-      background: #ddd;
-      border: 3px solid white;
+      background: #d9e3dd;
+      border: 3px solid var(--bg);
       z-index: 2;
-      transition: all 0.3s ease;
+      transition: transform 0.2s ease, background 0.2s ease;
     }
 
-    .step-dot.active {
-      background: var(--blue-warm);
-      transform: scale(1.2);
-    }
+    .dot.active { background: var(--accent); transform: scale(1.15); }
+    .dot.completed { background: var(--accent-dark); }
 
-    .step-dot.completed {
-      background: var(--success);
-    }
-
-    .quiz-card {
-      background: var(--white);
+    .card {
+      background: var(--card);
       border-radius: 16px;
-      padding: 30px 25px;
+      padding: 24px;
       box-shadow: var(--shadow);
-      margin-bottom: 20px;
+      border: 1px solid #f0f3f1;
     }
 
     .question-number {
+      color: var(--accent);
       font-size: 12px;
-      font-weight: 600;
-      color: var(--blue-warm);
       text-transform: uppercase;
       letter-spacing: 1px;
+      font-weight: 600;
       margin-bottom: 8px;
     }
 
     .question-text {
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--text-dark);
-      margin-bottom: 25px;
+      font-size: 21px;
+      line-height: 1.3;
+      margin-bottom: 18px;
     }
 
-    .options {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+    .options { display: flex; flex-direction: column; gap: 10px; }
 
     .option {
-      display: flex;
-      align-items: center;
-      padding: 16px 18px;
-      background: var(--blue-pale);
-      border: 2px solid transparent;
+      border: 2px solid #ebf0ed;
       border-radius: 12px;
+      padding: 14px 14px;
       cursor: pointer;
       transition: all 0.2s ease;
+      background: #fff;
       font-size: 15px;
     }
 
-    .option:hover {
-      background: #d4ebfc;
-      border-color: var(--blue-light);
-    }
-
+    .option:hover { border-color: var(--line); background: #fcfdfc; }
     .option.selected {
-      background: var(--blue-warm);
-      color: white;
-      border-color: var(--blue-deep);
+      border-color: var(--accent);
+      background: #f4f8f6;
+      color: #274236;
+      font-weight: 600;
     }
 
-    .option-icon {
-      width: 36px;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: white;
-      border-radius: 10px;
-      margin-right: 14px;
-      font-size: 18px;
-      flex-shrink: 0;
-    }
-
-    .option.selected .option-icon {
-      background: rgba(255,255,255,0.2);
-    }
+    .actions { margin-top: 16px; }
 
     .btn {
       width: 100%;
-      padding: 18px;
+      border-radius: 12px;
+      border: 0;
+      padding: 15px;
       font-size: 16px;
       font-weight: 600;
-      border: none;
-      border-radius: 12px;
       cursor: pointer;
       transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, var(--blue-warm) 0%, var(--blue-deep) 100%);
-      color: white;
-      box-shadow: 0 4px 15px rgba(58, 123, 213, 0.3);
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 5px 16px rgba(107, 142, 127, 0.26);
     }
 
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(58, 123, 213, 0.4);
-    }
-
-    .btn-primary:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-    }
+    .btn-primary:hover { background: var(--accent-dark); transform: translateY(-1px); }
+    .btn-primary:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
 
     .btn-secondary {
       background: transparent;
-      color: var(--blue-warm);
-      border: 2px solid var(--blue-light);
-      margin-top: 12px;
+      color: var(--accent-dark);
+      border: 2px solid var(--line);
+      margin-top: 10px;
     }
 
-    .btn-secondary:hover {
-      background: var(--blue-pale);
-    }
+    .btn-secondary:hover { background: #f6faf8; }
 
-    /* Results */
-    .result-card {
+    .hidden { display: none !important; }
+
+    .results-header {
       text-align: center;
-      padding: 35px 25px;
+      margin-bottom: 14px;
+      color: var(--accent-dark);
+      font-weight: 700;
+      font-size: 22px;
     }
 
-    .result-icon {
-      width: 80px;
-      height: 80px;
-      background: linear-gradient(135deg, var(--blue-warm) 0%, var(--blue-deep) 100%);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 20px;
-      font-size: 36px;
+    .results-grid {
+      display: grid;
+      gap: 14px;
+      margin-bottom: 14px;
     }
 
-    .result-label {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--blue-warm);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 8px;
+    .result-item {
+      border: 1px solid #e8eeea;
+      border-radius: 14px;
+      padding: 16px;
+      background: #fff;
     }
 
     .result-title {
-      font-size: 26px;
-      font-weight: 700;
-      color: var(--text-dark);
-      margin-bottom: 16px;
+      font-size: 19px;
+      color: var(--accent-dark);
+      margin-bottom: 6px;
     }
 
     .result-description {
+      color: var(--muted);
       font-size: 15px;
-      color: var(--text-light);
-      line-height: 1.7;
-      margin-bottom: 28px;
+      margin-bottom: 12px;
     }
 
-    .cta-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 18px 35px;
-      background: linear-gradient(135deg, var(--blue-warm) 0%, var(--blue-deep) 100%);
-      color: white;
-      text-decoration: none;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: 600;
-      box-shadow: 0 4px 15px rgba(58, 123, 213, 0.3);
-      transition: all 0.2s ease;
+    .practice-note {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 14px;
+      text-align: center;
     }
 
-    .cta-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(58, 123, 213, 0.4);
-    }
-
-    .cta-btn::after {
-      content: ' →';
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    @media (max-width: 380px) {
+    @media (max-width: 420px) {
       h1 { font-size: 24px; }
-      .question-text { font-size: 18px; }
-      .option { padding: 14px 16px; }
+      .question-text { font-size: 19px; }
+      .card { padding: 20px; }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
-      <div class="logo">WEO Marketly</div>
-      <h1>Find Your Perfect Dental Care</h1>
-      <p class="subtitle">Answer 5 quick questions to discover the right service for you</p>
+      <div class="greeting">Hi — let's figure out what you need.</div>
+      <h1>Willamette Family Dental Service Match</h1>
+      <p class="subtitle">Answer 5 quick questions and we'll point you to the right next step.</p>
+      <p class="identity">Willamette Family Dental • Hawthorne Blvd, SE Portland • Mon–Fri 8–5, Sat by appointment</p>
     </header>
 
-    <!-- Progress Bar -->
-    <div class="progress-bar">
+    <div class="progress" aria-hidden="true">
       <div class="progress-fill" id="progressFill"></div>
-      <div class="step-dot active" data-step="1"></div>
-      <div class="step-dot" data-step="2"></div>
-      <div class="step-dot" data-step="3"></div>
-      <div class="step-dot" data-step="4"></div>
-      <div class="step-dot" data-step="5"></div>
+      <div class="dot active"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
     </div>
 
-    <!-- Questions -->
     <div id="quizContainer">
-      <!-- Q1: Cosmetic Concerns -->
-      <div class="quiz-card" data-question="1">
+      <div class="card" data-question="1">
         <div class="question-number">Question 1 of 5</div>
-        <div class="question-text">What's your primary dental concern?</div>
+        <div class="question-text">What's your main concern right now?</div>
         <div class="options">
-          <div class="option" data-value="cosmetic">
-            <div class="option-icon">✨</div>
-            <span>Teeth whitening or smile makeover</span>
-          </div>
-          <div class="option" data-value="orthodontics">
-            <div class="option-icon">🦷</div>
-            <span>Straightening crooked teeth</span>
-          </div>
-          <div class="option" data-value="implants">
-            <div class="option-icon">🔧</div>
-            <span>Missing or damaged teeth</span>
-          </div>
-          <div class="option" data-value="general">
-            <div class="option-icon">🩺</div>
-            <span>Routine checkup or cleaning</span>
-          </div>
-          <div class="option" data-value="pediatric">
-            <div class="option-icon">👶</div>
-            <span>My child's dental health</span>
-          </div>
+          <div class="option" data-value="cosmetic">I want to improve color or shape of my smile.</div>
+          <div class="option" data-value="orthodontics">I want straighter teeth or bite correction.</div>
+          <div class="option" data-value="implants">I have a missing tooth or a tooth that may need replacement.</div>
+          <div class="option" data-value="general">I need a checkup, cleaning, or routine treatment.</div>
+          <div class="option" data-value="pediatric">I'm booking for my child.</div>
         </div>
-        <button class="btn btn-primary" id="nextBtn1" disabled onclick="nextQuestion(1)">Continue</button>
+        <div class="actions">
+          <button class="btn btn-primary" id="nextBtn1" disabled onclick="nextQuestion(1)">Continue</button>
+        </div>
       </div>
 
-      <!-- Q2: Pain Level -->
-      <div class="quiz-card hidden" data-question="2">
+      <div class="card hidden" data-question="2">
         <div class="question-number">Question 2 of 5</div>
-        <div class="question-text">Are you experiencing any pain or discomfort?</div>
+        <div class="question-text">How much pain are you in?</div>
         <div class="options">
-          <div class="option" data-value="none">
-            <div class="option-icon">😊</div>
-            <span>No pain at all</span>
-          </div>
-          <div class="option" data-value="mild">
-            <div class="option-icon">😐</div>
-            <span>Mild sensitivity occasionally</span>
-          </div>
-          <div class="option" data-value="moderate">
-            <div class="option-icon">😣</div>
-            <span>Moderate pain affecting daily life</span>
-          </div>
-          <div class="option" data-value="severe">
-            <div class="option-icon">😱</div>
-            <span>Severe or constant pain</span>
-          </div>
+          <div class="option" data-value="none">No pain right now.</div>
+          <div class="option" data-value="mild">Some sensitivity or occasional discomfort.</div>
+          <div class="option" data-value="moderate">Daily discomfort, but manageable.</div>
+          <div class="option" data-value="severe">Severe pain or swelling.</div>
         </div>
-        <button class="btn btn-primary" id="nextBtn2" disabled onclick="nextQuestion(2)">Continue</button>
-        <button class="btn btn-secondary" onclick="prevQuestion(2)">Back</button>
+        <div class="actions">
+          <button class="btn btn-primary" id="nextBtn2" disabled onclick="nextQuestion(2)">Continue</button>
+          <button class="btn btn-secondary" onclick="prevQuestion(2)">Back</button>
+        </div>
       </div>
 
-      <!-- Q3: Age Range -->
-      <div class="quiz-card hidden" data-question="3">
+      <div class="card hidden" data-question="3">
         <div class="question-number">Question 3 of 5</div>
-        <div class="question-text">What's your age range?</div>
+        <div class="question-text">Who is this appointment for?</div>
         <div class="options">
-          <div class="option" data-value="child">
-            <div class="option-icon">🧒</div>
-            <span>Under 18</span>
-          </div>
-          <div class="option" data-value="young">
-            <div class="option-icon">👨</div>
-            <span>18 - 35</span>
-          </div>
-          <div class="option" data-value="middle">
-            <div class="option-icon">👔</div>
-            <span>36 - 55</span>
-          </div>
-          <div class="option" data-value="senior">
-            <div class="option-icon">👴</div>
-            <span>56+</span>
-          </div>
+          <div class="option" data-value="child">Under 18</div>
+          <div class="option" data-value="adult">18–55</div>
+          <div class="option" data-value="senior">56+</div>
         </div>
-        <button class="btn btn-primary" id="nextBtn3" disabled onclick="nextQuestion(3)">Continue</button>
-        <button class="btn btn-secondary" onclick="prevQuestion(3)">Back</button>
+        <div class="actions">
+          <button class="btn btn-primary" id="nextBtn3" disabled onclick="nextQuestion(3)">Continue</button>
+          <button class="btn btn-secondary" onclick="prevQuestion(3)">Back</button>
+        </div>
       </div>
 
-      <!-- Q4: Budget -->
-      <div class="quiz-card hidden" data-question="4">
+      <div class="card hidden" data-question="4">
         <div class="question-number">Question 4 of 5</div>
-        <div class="question-text">How comfortable are you with dental investments?</div>
+        <div class="question-text">How do you want to balance budget and treatment depth?</div>
         <div class="options">
-          <div class="option" data-value="budget">
-            <div class="option-icon">💲</div>
-            <span>Looking for most affordable options</span>
-          </div>
-          <div class="option" data-value="moderate">
-            <div class="option-icon">💵</div>
-            <span>Willing to invest for good value</span>
-          </div>
-          <div class="option" data-value="flexible">
-            <div class="option-icon">💎</div>
-            <span>Quality matters more than cost</span>
-          </div>
-          <div class="option" data-value="premium">
-            <div class="option-icon">👑</div>
-            <span>Want the best available treatment</span>
-          </div>
+          <div class="option" data-value="budget">Keep it focused on essential treatment.</div>
+          <div class="option" data-value="moderate">Best long-term value matters most.</div>
+          <div class="option" data-value="flexible">I can invest more for fewer follow-up issues.</div>
+          <div class="option" data-value="premium">I want the most complete option available.</div>
         </div>
-        <button class="btn btn-primary" id="nextBtn4" disabled onclick="nextQuestion(4)">Continue</button>
-        <button class="btn btn-secondary" onclick="prevQuestion(4)">Back</button>
+        <div class="actions">
+          <button class="btn btn-primary" id="nextBtn4" disabled onclick="nextQuestion(4)">Continue</button>
+          <button class="btn btn-secondary" onclick="prevQuestion(4)">Back</button>
+        </div>
       </div>
 
-      <!-- Q5: Time Preference -->
-      <div class="quiz-card hidden" data-question="5">
+      <div class="card hidden" data-question="5">
         <div class="question-number">Question 5 of 5</div>
-        <div class="question-text">When would you like to start treatment?</div>
+        <div class="question-text">When do you want to get started?</div>
         <div class="options">
-          <div class="option" data-value="urgent">
-            <div class="option-icon">⚡</div>
-            <span>As soon as possible</span>
-          </div>
-          <div class="option" data-value="soon">
-            <div class="option-icon">📅</div>
-            <span>Within the next few weeks</span>
-          </div>
-          <div class="option" data-value="planning">
-            <div class="option-icon">🗓️</div>
-            <span>Within the next few months</span>
-          </div>
-          <div class="option" data-value="exploring">
-            <div class="option-icon">🔍</div>
-            <span>Just exploring options right now</span>
-          </div>
+          <div class="option" data-value="urgent">As soon as possible.</div>
+          <div class="option" data-value="soon">Within 2–3 weeks.</div>
+          <div class="option" data-value="planning">Within the next few months.</div>
+          <div class="option" data-value="exploring">Just gathering information for now.</div>
         </div>
-        <button class="btn btn-primary" id="nextBtn5" disabled onclick="showResults()">See My Results</button>
-        <button class="btn btn-secondary" onclick="prevQuestion(5)">Back</button>
+        <div class="actions">
+          <button class="btn btn-primary" id="nextBtn5" disabled onclick="showResults()">See Results</button>
+          <button class="btn btn-secondary" onclick="prevQuestion(5)">Back</button>
+        </div>
       </div>
     </div>
 
-    <!-- Results -->
-    <div class="quiz-card result-card hidden" id="resultsCard">
-      <div class="result-icon" id="resultIcon">🦷</div>
-      <div class="result-label">Your Recommended Service</div>
-      <div class="result-title" id="resultTitle">General Dentistry</div>
-      <div class="result-description" id="resultDescription">
-        Based on your answers, our general dentistry services are perfect for maintaining your oral health with routine care and preventive treatments.
-      </div>
-      <a href="#contact" class="cta-btn" onclick="bookConsultation()">Book Your Free Consultation</a>
+    <div class="card hidden" id="resultsCard">
+      <div class="results-header">Recommended next step</div>
+      <div class="results-grid" id="resultsGrid"></div>
+      <p class="practice-note">We answer phones during office hours at (503) 555-0142. If it's after hours, email us and we'll call you back the next business day.</p>
     </div>
   </div>
 
   <script>
     const answers = {};
-    let currentQuestion = 1;
 
-    // Service recommendations with icons and descriptions
     const services = {
       cosmetic: {
         icon: '✨',
         title: 'Cosmetic Dentistry',
-        description: 'Transform your smile with our cosmetic treatments designed to enhance your appearance and boost your confidence. From professional whitening to complete smile makeovers, we create results you\'ll love to show off.'
+        description: 'We handle whitening, bonding, and veneer consults in-house, and we will tell you plainly what is worth doing and what is not. Dr. Nguyen usually starts with a conservative plan so you can phase treatment without surprises.'
       },
       orthodontics: {
         icon: '🦷',
-        title: 'Orthodontics',
-        description: 'Achieve a perfectly aligned smile with our modern orthodontic solutions including clear aligners and traditional braces. Our treatments fit your lifestyle while delivering beautiful, lasting results.'
+        title: 'Orthodontics (Invisalign)',
+        description: 'For aligners we use Invisalign exclusively, and Dr. Park handles complex movement plans in the 12–18 month range. We check fit closely at follow-ups so refinements are caught early instead of dragging treatment out.'
       },
       implants: {
-        icon: '🔧',
+        icon: '🔩',
         title: 'Dental Implants',
-        description: 'Restore your smile with permanent, natural-looking dental implants that look and function just like real teeth. Our implant specialists use advanced technology for comfortable, long-lasting tooth replacement.'
+        description: 'If a tooth is failing, we map out extraction, grafting, and implant timing up front so you know the full path before you commit. We coordinate every phase from this office, so you are not bouncing between three different clinics.'
       },
       general: {
         icon: '🩺',
-        title: 'General Dentistry',
-        description: 'Keep your smile healthy with comprehensive general dentistry services including cleanings, exams, fillings, and preventive care. We focus on maintaining your oral health for a lifetime of confident smiles.'
+        title: 'General & Urgent Care',
+        description: 'We keep same-week slots open for pain, chipped teeth, and infections, then shift to long-term care once things are stable. Most new patients start with exam, imaging, and a practical treatment sequence you can actually follow.'
       },
       pediatric: {
-        icon: '👶',
+        icon: '🧒',
         title: 'Pediatric Dentistry',
-        description: 'Give your child a positive dental experience with our gentle, kid-friendly pediatric services. We specialize in making dental visits fun while building healthy habits that last a lifetime.'
+        description: 'We keep kids moving with short visits, clear language, and no pressure, especially for first-time appointments. Dr. Nguyen focuses on prevention and habit coaching so home care is easier for both parents and kids.'
       }
     };
 
-    // Handle option selection
     document.querySelectorAll('.option').forEach(option => {
-      option.addEventListener('click', function() {
-        const question = this.closest('.quiz-card').dataset.question;
+      option.addEventListener('click', function () {
+        const card = this.closest('.card');
+        const question = card.dataset.question;
         const value = this.dataset.value;
-        
-        // Deselect all options in this question
-        this.closest('.options').querySelectorAll('.option').forEach(opt => {
-          opt.classList.remove('selected');
-        });
-        
-        // Select this option
+
+        card.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
         this.classList.add('selected');
+
         answers[question] = value;
-        
-        // Enable the next button
         document.getElementById(`nextBtn${question}`).disabled = false;
       });
     });
 
     function updateProgress(step) {
       const fill = document.getElementById('progressFill');
-      const dots = document.querySelectorAll('.step-dot');
-      
-      fill.style.width = `${((step - 1) / 4) * 80}%`;
-      
+      const dots = document.querySelectorAll('.dot');
+      fill.style.width = `${((step - 1) / 4) * 100}%`;
+
       dots.forEach((dot, i) => {
         dot.classList.remove('active', 'completed');
-        if (i + 1 < step) {
-          dot.classList.add('completed');
-        } else if (i + 1 === step) {
-          dot.classList.add('active');
-        }
+        if (i + 1 < step) dot.classList.add('completed');
+        if (i + 1 === step) dot.classList.add('active');
       });
     }
 
@@ -537,7 +399,6 @@
       document.querySelector(`[data-question="${current}"]`).classList.add('hidden');
       document.querySelector(`[data-question="${current + 1}"]`).classList.remove('hidden');
       updateProgress(current + 1);
-      currentQuestion = current + 1;
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -545,58 +406,111 @@
       document.querySelector(`[data-question="${current}"]`).classList.add('hidden');
       document.querySelector(`[data-question="${current - 1}"]`).classList.remove('hidden');
       updateProgress(current - 1);
-      currentQuestion = current - 1;
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function addWeights(scores, map) {
+      Object.entries(map).forEach(([category, points]) => {
+        scores[category] += points;
+      });
     }
 
     function calculateResult() {
-      // Primary decision based on Q1 (cosmetic concerns)
-      let result = answers['1'] || 'general';
-      
-      // Override for pediatric if age is child
+      const scores = {
+        cosmetic: 0,
+        orthodontics: 0,
+        implants: 0,
+        general: 0,
+        pediatric: 0
+      };
+
+      const q1 = answers['1'];
+      const q2 = answers['2'];
+      const q3 = answers['3'];
+      const q4 = answers['4'];
+      const q5 = answers['5'];
+
+      const q1Weights = {
+        cosmetic: { cosmetic: 5, orthodontics: 1 },
+        orthodontics: { orthodontics: 5, cosmetic: 1 },
+        implants: { implants: 5, general: 2 },
+        general: { general: 5 },
+        pediatric: { pediatric: 5, orthodontics: 1 }
+      };
+
+      const q2Weights = {
+        none: { cosmetic: 1, orthodontics: 1 },
+        mild: { general: 2, orthodontics: 1 },
+        moderate: { general: 3, implants: 1 },
+        severe: { general: 5, implants: 3 }
+      };
+
+      const q3Weights = {
+        child: { pediatric: 8, orthodontics: 2 },
+        adult: { general: 2, cosmetic: 1, orthodontics: 1 },
+        senior: { implants: 3, general: 2 }
+      };
+
+      const q4Weights = {
+        budget: { general: 2 },
+        moderate: { general: 1, orthodontics: 1 },
+        flexible: { implants: 2, orthodontics: 1 },
+        premium: { cosmetic: 2, implants: 2 }
+      };
+
+      const q5Weights = {
+        urgent: { general: 3, implants: 2 },
+        soon: { general: 1, orthodontics: 2 },
+        planning: { cosmetic: 2, orthodontics: 1 },
+        exploring: { cosmetic: 1, general: 1 }
+      };
+
+      if (q1 && q1Weights[q1]) addWeights(scores, q1Weights[q1]);
+      if (q2 && q2Weights[q2]) addWeights(scores, q2Weights[q2]);
+      if (q3 && q3Weights[q3]) addWeights(scores, q3Weights[q3]);
+      if (q4 && q4Weights[q4]) addWeights(scores, q4Weights[q4]);
+      if (q5 && q5Weights[q5]) addWeights(scores, q5Weights[q5]);
+
       if (answers['3'] === 'child') {
-        result = 'pediatric';
+        return ['pediatric'];
       }
-      
-      // Override for implants if severe pain and missing teeth concern
-      if (answers['2'] === 'severe' && answers['1'] === 'implants') {
-        result = 'implants';
+
+      const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+      const top = sorted[0];
+      const second = sorted[1];
+
+      if (second && (top[1] - second[1]) <= 2) {
+        return [top[0], second[0]];
       }
-      
-      // Default to general if nothing specific
-      if (!services[result]) {
-        result = 'general';
-      }
-      
-      return result;
+
+      return [top[0]];
+    }
+
+    function renderResultItem(key) {
+      const service = services[key];
+      return `
+        <div class="result-item">
+          <div class="result-title">${service.icon} ${service.title}</div>
+          <div class="result-description">${service.description}</div>
+        </div>
+      `;
     }
 
     function showResults() {
-      const result = calculateResult();
-      const service = services[result];
-      
-      // Hide quiz, show results
+      const resultKeys = calculateResult();
+      const resultsGrid = document.getElementById('resultsGrid');
+      const serviceNames = resultKeys.map(k => services[k].title).join(' and ');
+
+      resultsGrid.innerHTML = resultKeys.map(renderResultItem).join('') + `
+        <a class="btn btn-primary" href="tel:+15035550142">Call Now: (503) 555-0142</a>
+        <a class="btn btn-secondary" href="mailto:hello@willamettefamilydental.com?subject=Consultation%20request%20-%20${encodeURIComponent(serviceNames)}">Email Us for a Consultation</a>
+      `;
+
       document.getElementById('quizContainer').classList.add('hidden');
       document.getElementById('resultsCard').classList.remove('hidden');
-      
-      // Update progress to complete
-      const fill = document.getElementById('progressFill');
-      const dots = document.querySelectorAll('.step-dot');
-      fill.style.width = '80%';
-      dots.forEach(dot => dot.classList.add('completed'));
-      
-      // Populate results
-      document.getElementById('resultIcon').textContent = service.icon;
-      document.getElementById('resultTitle').textContent = service.title;
-      document.getElementById('resultDescription').textContent = service.description;
-      
+      updateProgress(5);
+      document.querySelectorAll('.dot').forEach(dot => dot.classList.add('completed'));
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function bookConsultation() {
-      const result = calculateResult();
-      const service = services[result];
-      alert(`Thank you! We'll contact you shortly about our ${service.title} services.`);
     }
   </script>
 </body>
