@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find Your Dental Service | WEO Marketly</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --blue-deep: #1e5799;
+      --blue-warm: #3a7bd5;
+      --blue-light: #7db9e8;
+      --blue-pale: #e8f4fc;
+      --white: #ffffff;
+      --text-dark: #2c3e50;
+      --text-light: #6b7c93;
+      --success: #27ae60;
+      --shadow: 0 4px 20px rgba(30, 87, 153, 0.15);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: linear-gradient(135deg, var(--blue-pale) 0%, var(--white) 100%);
+      min-height: 100vh;
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      padding: 30px 0 20px;
+    }
+
+    .logo {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--blue-warm);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--blue-deep);
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 15px;
+      color: var(--text-light);
+    }
+
+    .progress-bar {
+      display: flex;
+      justify-content: space-between;
+      padding: 25px 10px;
+      position: relative;
+    }
+
+    .progress-bar::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      right: 10%;
+      height: 3px;
+      background: #ddd;
+      transform: translateY(-50%);
+      z-index: 0;
+    }
+
+    .progress-fill {
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      height: 3px;
+      background: var(--blue-warm);
+      transform: translateY(-50%);
+      transition: width 0.3s ease;
+      z-index: 1;
+    }
+
+    .step-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #ddd;
+      border: 3px solid white;
+      z-index: 2;
+      transition: all 0.3s ease;
+    }
+
+    .step-dot.active {
+      background: var(--blue-warm);
+      transform: scale(1.2);
+    }
+
+    .step-dot.completed {
+      background: var(--success);
+    }
+
+    .quiz-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 30px 25px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+
+    .question-number {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--blue-warm);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .question-text {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 25px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      padding: 16px 18px;
+      background: var(--blue-pale);
+      border: 2px solid transparent;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 15px;
+    }
+
+    .option:hover {
+      background: #d4ebfc;
+      border-color: var(--blue-light);
+    }
+
+    .option.selected {
+      background: var(--blue-warm);
+      color: white;
+      border-color: var(--blue-deep);
+    }
+
+    .option-icon {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      border-radius: 10px;
+      margin-right: 14px;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .option.selected .option-icon {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 18px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--blue-warm) 0%, var(--blue-deep) 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(58, 123, 213, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(58, 123, 213, 0.4);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--blue-warm);
+      border: 2px solid var(--blue-light);
+      margin-top: 12px;
+    }
+
+    .btn-secondary:hover {
+      background: var(--blue-pale);
+    }
+
+    /* Results */
+    .result-card {
+      text-align: center;
+      padding: 35px 25px;
+    }
+
+    .result-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--blue-warm) 0%, var(--blue-deep) 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 36px;
+    }
+
+    .result-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--blue-warm);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .result-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 16px;
+    }
+
+    .result-description {
+      font-size: 15px;
+      color: var(--text-light);
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px 35px;
+      background: linear-gradient(135deg, var(--blue-warm) 0%, var(--blue-deep) 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(58, 123, 213, 0.3);
+      transition: all 0.2s ease;
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(58, 123, 213, 0.4);
+    }
+
+    .cta-btn::after {
+      content: ' →';
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 380px) {
+      h1 { font-size: 24px; }
+      .question-text { font-size: 18px; }
+      .option { padding: 14px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">WEO Marketly</div>
+      <h1>Find Your Perfect Dental Care</h1>
+      <p class="subtitle">Answer 5 quick questions to discover the right service for you</p>
+    </header>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+      <div class="step-dot active" data-step="1"></div>
+      <div class="step-dot" data-step="2"></div>
+      <div class="step-dot" data-step="3"></div>
+      <div class="step-dot" data-step="4"></div>
+      <div class="step-dot" data-step="5"></div>
+    </div>
+
+    <!-- Questions -->
+    <div id="quizContainer">
+      <!-- Q1: Cosmetic Concerns -->
+      <div class="quiz-card" data-question="1">
+        <div class="question-number">Question 1 of 5</div>
+        <div class="question-text">What's your primary dental concern?</div>
+        <div class="options">
+          <div class="option" data-value="cosmetic">
+            <div class="option-icon">✨</div>
+            <span>Teeth whitening or smile makeover</span>
+          </div>
+          <div class="option" data-value="orthodontics">
+            <div class="option-icon">🦷</div>
+            <span>Straightening crooked teeth</span>
+          </div>
+          <div class="option" data-value="implants">
+            <div class="option-icon">🔧</div>
+            <span>Missing or damaged teeth</span>
+          </div>
+          <div class="option" data-value="general">
+            <div class="option-icon">🩺</div>
+            <span>Routine checkup or cleaning</span>
+          </div>
+          <div class="option" data-value="pediatric">
+            <div class="option-icon">👶</div>
+            <span>My child's dental health</span>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="nextBtn1" disabled onclick="nextQuestion(1)">Continue</button>
+      </div>
+
+      <!-- Q2: Pain Level -->
+      <div class="quiz-card hidden" data-question="2">
+        <div class="question-number">Question 2 of 5</div>
+        <div class="question-text">Are you experiencing any pain or discomfort?</div>
+        <div class="options">
+          <div class="option" data-value="none">
+            <div class="option-icon">😊</div>
+            <span>No pain at all</span>
+          </div>
+          <div class="option" data-value="mild">
+            <div class="option-icon">😐</div>
+            <span>Mild sensitivity occasionally</span>
+          </div>
+          <div class="option" data-value="moderate">
+            <div class="option-icon">😣</div>
+            <span>Moderate pain affecting daily life</span>
+          </div>
+          <div class="option" data-value="severe">
+            <div class="option-icon">😱</div>
+            <span>Severe or constant pain</span>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="nextBtn2" disabled onclick="nextQuestion(2)">Continue</button>
+        <button class="btn btn-secondary" onclick="prevQuestion(2)">Back</button>
+      </div>
+
+      <!-- Q3: Age Range -->
+      <div class="quiz-card hidden" data-question="3">
+        <div class="question-number">Question 3 of 5</div>
+        <div class="question-text">What's your age range?</div>
+        <div class="options">
+          <div class="option" data-value="child">
+            <div class="option-icon">🧒</div>
+            <span>Under 18</span>
+          </div>
+          <div class="option" data-value="young">
+            <div class="option-icon">👨</div>
+            <span>18 - 35</span>
+          </div>
+          <div class="option" data-value="middle">
+            <div class="option-icon">👔</div>
+            <span>36 - 55</span>
+          </div>
+          <div class="option" data-value="senior">
+            <div class="option-icon">👴</div>
+            <span>56+</span>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="nextBtn3" disabled onclick="nextQuestion(3)">Continue</button>
+        <button class="btn btn-secondary" onclick="prevQuestion(3)">Back</button>
+      </div>
+
+      <!-- Q4: Budget -->
+      <div class="quiz-card hidden" data-question="4">
+        <div class="question-number">Question 4 of 5</div>
+        <div class="question-text">How comfortable are you with dental investments?</div>
+        <div class="options">
+          <div class="option" data-value="budget">
+            <div class="option-icon">💲</div>
+            <span>Looking for most affordable options</span>
+          </div>
+          <div class="option" data-value="moderate">
+            <div class="option-icon">💵</div>
+            <span>Willing to invest for good value</span>
+          </div>
+          <div class="option" data-value="flexible">
+            <div class="option-icon">💎</div>
+            <span>Quality matters more than cost</span>
+          </div>
+          <div class="option" data-value="premium">
+            <div class="option-icon">👑</div>
+            <span>Want the best available treatment</span>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="nextBtn4" disabled onclick="nextQuestion(4)">Continue</button>
+        <button class="btn btn-secondary" onclick="prevQuestion(4)">Back</button>
+      </div>
+
+      <!-- Q5: Time Preference -->
+      <div class="quiz-card hidden" data-question="5">
+        <div class="question-number">Question 5 of 5</div>
+        <div class="question-text">When would you like to start treatment?</div>
+        <div class="options">
+          <div class="option" data-value="urgent">
+            <div class="option-icon">⚡</div>
+            <span>As soon as possible</span>
+          </div>
+          <div class="option" data-value="soon">
+            <div class="option-icon">📅</div>
+            <span>Within the next few weeks</span>
+          </div>
+          <div class="option" data-value="planning">
+            <div class="option-icon">🗓️</div>
+            <span>Within the next few months</span>
+          </div>
+          <div class="option" data-value="exploring">
+            <div class="option-icon">🔍</div>
+            <span>Just exploring options right now</span>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="nextBtn5" disabled onclick="showResults()">See My Results</button>
+        <button class="btn btn-secondary" onclick="prevQuestion(5)">Back</button>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="quiz-card result-card hidden" id="resultsCard">
+      <div class="result-icon" id="resultIcon">🦷</div>
+      <div class="result-label">Your Recommended Service</div>
+      <div class="result-title" id="resultTitle">General Dentistry</div>
+      <div class="result-description" id="resultDescription">
+        Based on your answers, our general dentistry services are perfect for maintaining your oral health with routine care and preventive treatments.
+      </div>
+      <a href="#contact" class="cta-btn" onclick="bookConsultation()">Book Your Free Consultation</a>
+    </div>
+  </div>
+
+  <script>
+    const answers = {};
+    let currentQuestion = 1;
+
+    // Service recommendations with icons and descriptions
+    const services = {
+      cosmetic: {
+        icon: '✨',
+        title: 'Cosmetic Dentistry',
+        description: 'Transform your smile with our cosmetic treatments designed to enhance your appearance and boost your confidence. From professional whitening to complete smile makeovers, we create results you\'ll love to show off.'
+      },
+      orthodontics: {
+        icon: '🦷',
+        title: 'Orthodontics',
+        description: 'Achieve a perfectly aligned smile with our modern orthodontic solutions including clear aligners and traditional braces. Our treatments fit your lifestyle while delivering beautiful, lasting results.'
+      },
+      implants: {
+        icon: '🔧',
+        title: 'Dental Implants',
+        description: 'Restore your smile with permanent, natural-looking dental implants that look and function just like real teeth. Our implant specialists use advanced technology for comfortable, long-lasting tooth replacement.'
+      },
+      general: {
+        icon: '🩺',
+        title: 'General Dentistry',
+        description: 'Keep your smile healthy with comprehensive general dentistry services including cleanings, exams, fillings, and preventive care. We focus on maintaining your oral health for a lifetime of confident smiles.'
+      },
+      pediatric: {
+        icon: '👶',
+        title: 'Pediatric Dentistry',
+        description: 'Give your child a positive dental experience with our gentle, kid-friendly pediatric services. We specialize in making dental visits fun while building healthy habits that last a lifetime.'
+      }
+    };
+
+    // Handle option selection
+    document.querySelectorAll('.option').forEach(option => {
+      option.addEventListener('click', function() {
+        const question = this.closest('.quiz-card').dataset.question;
+        const value = this.dataset.value;
+        
+        // Deselect all options in this question
+        this.closest('.options').querySelectorAll('.option').forEach(opt => {
+          opt.classList.remove('selected');
+        });
+        
+        // Select this option
+        this.classList.add('selected');
+        answers[question] = value;
+        
+        // Enable the next button
+        document.getElementById(`nextBtn${question}`).disabled = false;
+      });
+    });
+
+    function updateProgress(step) {
+      const fill = document.getElementById('progressFill');
+      const dots = document.querySelectorAll('.step-dot');
+      
+      fill.style.width = `${((step - 1) / 4) * 80}%`;
+      
+      dots.forEach((dot, i) => {
+        dot.classList.remove('active', 'completed');
+        if (i + 1 < step) {
+          dot.classList.add('completed');
+        } else if (i + 1 === step) {
+          dot.classList.add('active');
+        }
+      });
+    }
+
+    function nextQuestion(current) {
+      document.querySelector(`[data-question="${current}"]`).classList.add('hidden');
+      document.querySelector(`[data-question="${current + 1}"]`).classList.remove('hidden');
+      updateProgress(current + 1);
+      currentQuestion = current + 1;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function prevQuestion(current) {
+      document.querySelector(`[data-question="${current}"]`).classList.add('hidden');
+      document.querySelector(`[data-question="${current - 1}"]`).classList.remove('hidden');
+      updateProgress(current - 1);
+      currentQuestion = current - 1;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function calculateResult() {
+      // Primary decision based on Q1 (cosmetic concerns)
+      let result = answers['1'] || 'general';
+      
+      // Override for pediatric if age is child
+      if (answers['3'] === 'child') {
+        result = 'pediatric';
+      }
+      
+      // Override for implants if severe pain and missing teeth concern
+      if (answers['2'] === 'severe' && answers['1'] === 'implants') {
+        result = 'implants';
+      }
+      
+      // Default to general if nothing specific
+      if (!services[result]) {
+        result = 'general';
+      }
+      
+      return result;
+    }
+
+    function showResults() {
+      const result = calculateResult();
+      const service = services[result];
+      
+      // Hide quiz, show results
+      document.getElementById('quizContainer').classList.add('hidden');
+      document.getElementById('resultsCard').classList.remove('hidden');
+      
+      // Update progress to complete
+      const fill = document.getElementById('progressFill');
+      const dots = document.querySelectorAll('.step-dot');
+      fill.style.width = '80%';
+      dots.forEach(dot => dot.classList.add('completed'));
+      
+      // Populate results
+      document.getElementById('resultIcon').textContent = service.icon;
+      document.getElementById('resultTitle').textContent = service.title;
+      document.getElementById('resultDescription').textContent = service.description;
+      
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function bookConsultation() {
+      const result = calculateResult();
+      const service = services[result];
+      alert(`Thank you! We'll contact you shortly about our ${service.title} services.`);
+    }
+  </script>
+</body>
+</html>
